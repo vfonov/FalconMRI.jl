@@ -1,8 +1,8 @@
 module FalconMRI
 
 
-using CairoMakie
 using PlyIO
+using Requires
 
 
 # File IO
@@ -22,6 +22,10 @@ export draw_multiple_fields
 # read/write FALCON meshes
 include("falcon_mesh.jl")
 
+# draw meshes using Makie
+function __init__()
+    @require Makie="ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a" include("falcon_makie.jl")
+end
 
 
 end

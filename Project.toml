@@ -4,8 +4,8 @@ authors = ["Vladimir S. FONOV"]
 version = "1.0.0-DEV"
 
 [deps]
-CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 PlyIO = "42171d58-473b-503a-8d5f-782019eb09ec"
+Requires = "ae029012-a4dd-5104-9daa-d747884805df"
 
 [compat]
 julia = "1"
