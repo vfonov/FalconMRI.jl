@@ -7,9 +7,9 @@ function draw_two_hemispheres!(layout,V1,F1, V2,F2;
         FLD1=nothing,FLD2=nothing,
         colorrange=nothing,
         colormap=:viridis,
-        nan_color=RGBAf(0,0,0,0),
+        nan_color=Makie.RGBAf(0,0,0,0),
         compact=false)
-    
+
     VC=vcat(V1, V2)
     FC=vcat(F1, F2 .+ size(V1,1))
 
@@ -52,7 +52,7 @@ function draw_two_hemispheres!(layout,V1,F1, V2,F2;
         (a,rot) = p
         as = String(a)
 
-        ax = Axis3(layout[fldmod1(i,2)...], 
+        ax = Makie.Axis3(layout[fldmod1(i,2)...], 
                     aspect=    :data, 
                     azimuth   = rot[1]*pi/180, 
                     elevation = rot[2]*pi/180, 
@@ -61,10 +61,10 @@ function draw_two_hemispheres!(layout,V1,F1, V2,F2;
                     xgridvisible=false,  zgridvisible=false,  ygridvisible=false,
                 ) 
         if !compact
-            Label( layout[fldmod1(i,2)..., Bottom()], as, justification = :center, valign = :top)
+            Makie.Label( layout[fldmod1(i,2)..., Makie.Bottom()], as, justification = :center, valign = :top)
         end
 
-        hidedecorations!(ax)
+        Makie.hidedecorations!(ax)
         ax.protrusions = (0, 0, 0, 0)
         
         if isnothing(colorrange)
@@ -74,11 +74,11 @@ function draw_two_hemispheres!(layout,V1,F1, V2,F2;
         end
         
         if endswith(as,"LH")
-            push!(m, mesh!( V1, F1; color=FLD1, opts...))
+            push!(m, Makie.mesh!( V1, F1; color=FLD1, opts...))
         elseif endswith(as,"RH")
-            push!(m, mesh!( V2, F2; color=FLD2, opts...))
+            push!(m, Makie.mesh!( V2, F2; color=FLD2, opts...))
         else
-            push!(m, mesh!( VC, FC; color=FLDC, opts...))
+            push!(m, Makie.mesh!( VC, FC; color=FLDC, opts...))
         end
     end
 
@@ -90,8 +90,8 @@ function draw_two_hemispheres!(layout,V1,F1, V2,F2;
     # colsize!(layout, 1, Auto(1)) #Aspect(1, 1.0)
     # colsize!(layout, 2, Auto(1)) #Aspect(1, 1.0)
 
-    colgap!(layout, 0)
-    rowgap!(layout, 0)
+    Makie.colgap!(layout, 0)
+    Makie.rowgap!(layout, 0)
     
     return m
 end
@@ -122,28 +122,28 @@ function draw_multiple_fields(layout,ctx::falcon_cortex,FIELDS;
     m=[]
     for i in 1:size(FIELDS,2)
         if compact
-            g = layout[fldmod1(i,cols)...] = GridLayout(2, 2, tellwidth=false, tellheigh=false)
+            g = layout[fldmod1(i,cols)...] = Makie.GridLayout(2, 2, tellwidth=false, tellheigh=false)
         else
-            g = layout[fldmod1(i,cols)...] = GridLayout(4, 2, tellwidth=false, tellheigh=false)
+            g = layout[fldmod1(i,cols)...] = Makie.GridLayout(4, 2, tellwidth=false, tellheigh=false)
         end
         ####
         #Box(g, color = :transparent, strokewidth = 1)
         push!(m, draw_two_hemispheres!(g, ctx, FIELDS[:,i]; compact, colorrange, options... ))
         
         if !compact
-            Label(g[1,:,Top()], "$(i)",font=:bold)
+            Makie.Label(g[1,:,Top()], "$(i)",font=:bold)
         end
     end
 
     if !isnothing(colwidth)
         for i in 1:cols
-            colsize!(layout, i, colwidth)
+            Makie.colsize!(layout, i, colwidth)
         end
     end
    
     if !isnothing(rowheight)
         for i in 1:div(size(FIELDS,2),cols, RoundUp)
-            rowsize!(layout, i, rowheight)
+            Makie.rowsize!(layout, i, rowheight)
         end
     end
 
