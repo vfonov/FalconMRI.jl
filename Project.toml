@@ -8,6 +8,7 @@ PlyIO = "42171d58-473b-503a-8d5f-782019eb09ec"
 Requires = "ae029012-a4dd-5104-9daa-d747884805df"
 
 [compat]
+PlyIO = "1"
 julia = "1"
 
 [extras]
