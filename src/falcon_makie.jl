@@ -115,7 +115,7 @@ convenience function to draw multuple scalar fields
 function draw_multiple_fields(layout,ctx::falcon_cortex,FIELDS; 
         colorrange=nothing, cols=3, 
         colwidth=nothing, rowheight=nothing, 
-        compact = false,
+        compact = false, col_names=nothing,
         options...)
     
     @assert size(FIELDS,1)==(size(ctx.LH.V,1)+size(ctx.RH.V,1))
@@ -131,7 +131,11 @@ function draw_multiple_fields(layout,ctx::falcon_cortex,FIELDS;
         push!(m, draw_two_hemispheres!(g, ctx, FIELDS[:,i]; compact, colorrange, options... ))
         
         if !compact
-            Makie.Label(g[1,:,Top()], "$(i)",font=:bold)
+            if isnothing(col_names)
+                Makie.Label(g[1,:,Makie.Top()], "$(i)",font=:bold)
+            else
+                Makie.Label(g[1,:,Makie.Top()], col_names[i],font=:bold)
+            end
         end
     end
 
